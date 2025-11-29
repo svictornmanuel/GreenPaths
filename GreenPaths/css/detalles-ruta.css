@@ -1,0 +1,91 @@
+:root{
+    --color-principal: rgb(36, 68, 48);
+    --color-secundario: rgb(97, 186, 75);
+    --color-boton: rgb(255, 174, 12);
+    --color-boton-secundario: rgb(235, 118, 8);
+    --color-white: rgb(255 ,255 ,255);
+
+    --box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.1)
+}
+
+/*=======================================================================================*/
+/* PRESENTATION SECTION */
+.presentation-section{ /* alinear texto y margen inferior */
+    text-align: left;
+    margin-bottom: 5%;
+}
+
+.presentation-img{
+    /* margen superior e inferior */
+    margin-top: 5%;
+    margin-bottom: 1%;
+
+    /* tamaño del contenedor de la imagen */
+    width: 100%;
+    height: 300px;
+    overflow: hidden; /* recorta lo que no se ve de la imagen */
+
+    border-radius: 10px; /* esquinas */
+
+    box-shadow: var(--box-shadow);
+}
+
+.presentation-img img{
+    /* miestra toda la imagen dentro de su contenedor */
+    width: 100%;
+    height: 100%;
+
+    /* mantiene la relación de tamaño de la imagen */
+    object-fit: cover;
+}
+
+/*=======================================================================================*/
+/* DETAIL SECTION */
+.detail-section{ /* margen inferior */
+    margin-bottom: 5%;
+}
+
+.detail-grid{
+    display: flex; /* disposición de cuadricula */
+    justify-content: space-between; /* coloca los elementos a los lados */
+    
+    /* espacio entre cada contenido e imagen y margen superior */
+    gap: 5%;
+    margin-top: 1%;
+
+    background-color: var(--color-secundario);
+    border-radius: 10px; /* redondea los bordes */
+    overflow: hidden; /* recorta lo que no se ve */
+    text-align: left;
+    align-items: center; /* alinea elementos en el centro */
+
+    box-shadow: var(--box-shadow);
+}
+
+.detail-column{ /* margen interior de las columnas */
+    color: var(--color-white);
+    padding: 3%;
+}
+
+.detail-column h2 { /* margen inferior */
+    margin-bottom: 3%;
+}
+
+.detail-data-item p { /* ancho de la letra y margen inferior */
+    font-size: 16px;
+    margin-bottom: 3%;
+}
+
+.detail-img{
+    /* ancho y alto */
+    width: 100%;
+    height: 300px;
+}
+
+.detail-img img{
+    /* ocupa todo el ancho y alto disponible */
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* mantiene la relación de tamaño de la imagen */
+    border-radius: 5px; /* esquinas */
+} 
