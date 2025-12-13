@@ -4,14 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GreenPaths - Rutas Verdes Urbanas</title>
-    <link rel="stylesheet" href="./css/main.css">
-    <link rel="stylesheet" href="./css/style.css">
+
+    <link rel="stylesheet" href="./css/styles.css">
+
+    <!-- API LEAFLET -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+
 </head>
 <body>
     <header class="main-header">
         <nav class="navbar">
             <a href="./index.html" class="logo">
-                <img src="./img/icons8-árbol-64.png" alt="logo árbol">
+                <img src="./img/favicon-green-paths.png" alt="logo GreenPaths" class="favicon">
                 <p>GreenPaths</p>
             </a>
             <ul class="nav-links">
@@ -21,8 +31,14 @@
                 <li><a href="#ambiente">Ambiente</a></li>
                 <li><a href="#contribuye">Contribuye</a></li>
                 <li><a href="#nosotros">Nosotros</a></li>
-                <li><a href="./pages/mapa-greenpaths.html" class="boton">Explorar Rutas</a></li>
+                <li><a href="#inicio" class="boton">Explorar Rutas</a></li>
             </ul>
+            <!-- Agregar dentro del .navbar, después del .logo -->
+            <button class="menu-toggle" aria-label="Abrir menú" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </nav>
     </header>
 
@@ -32,10 +48,10 @@
             <h1>Descubre Rutas Verdes Urbanas</h1>
             <h3>Conecta con la naturaleza urbana mientras promueves movilidad sostenible</h3>
             <p>Explora rutas seguras y ecológicas diseñadas para caminantes y ciclistas. Encuentra los mejores recorridos verdes de tu ciudad, promoviendo movilidad sostenible y bienestar comunitario.</p>
-            <a href="./pages/mapa-greenpaths.html" class="boton">Descubre Rutas</a>
-            <div class="hero-map-img">
-                <img src="./img/GoogleMapsImg.png" alt="GoogleMapsImg">
-            </div>
+            
+            <a class="boton" onclick="mostrarCiudad('bogota-dc')">Descubre Rutas</a>
+
+            <div class="map" id="map"></div>
         </section>
 
         <!--sección 2 | #rutas-->
@@ -49,7 +65,14 @@
                     <div class="card-content">
                         <h3>Ruta Parque Simón Bolívar</h3>
                         <p>El "pulmón verde" de Bogotá. Ideal para trotar, montar en bici, pícnics y grandes eventos.</p>
-                        <a href="./ruta-parque-simon-bolivar.html" class="boton">Más Detalles</a>
+                        
+                        <h4>Detalles de la Ruta</h4>
+                        <ul>
+                            <li><p>Calle 63 #48-17 (Localidad de Teusaquillo)</p></li>
+                            <li><p>Caminata y Bicicleta (Pista de trote y ciclopaseo natural)</p></li>
+                        </ul>
+
+                        <a href="#inicio" class="boton" onclick="mostrarRuta('simon-bolivar')">Ver Ruta</a>
                     </div>
                 </article>
                     
@@ -58,7 +81,14 @@
                     <div class="card-content">
                         <h3>Ruta Parque Simón Bolívar</h3>
                         <p>El "pulmón verde" de Bogotá. Ideal para trotar, montar en bici, pícnics y grandes eventos.</p>
-                        <a href="./ruta-parque-simon-bolivar.html" class="boton">Más Detalles</a>
+                        
+                        <h4>Detalles de la Ruta</h4>
+                        <ul>
+                            <li><p>Calle 63 #48-17 (Localidad de Teusaquillo)</p></li>
+                            <li><p>Caminata y Bicicleta (Pista de trote y ciclopaseo natural)</p></li>
+                        </ul>
+
+                        <a href="#inicio" class="boton" onclick="mostrarRuta('simon-bolivar')">Ver Ruta</a>
                     </div>
                 </article>
 
@@ -67,7 +97,14 @@
                     <div class="card-content">
                         <h3>Ruta Parque Simón Bolívar</h3>
                         <p>El "pulmón verde" de Bogotá. Ideal para trotar, montar en bici, pícnics y grandes eventos.</p>
-                        <a href="./ruta-parque-simon-bolivar.html" class="boton">Más Detalles</a>
+                        
+                        <h4>Detalles de la Ruta</h4>
+                        <ul>
+                            <li><p>Calle 63 #48-17 (Localidad de Teusaquillo)</p></li>
+                            <li><p>Caminata y Bicicleta (Pista de trote y ciclopaseo natural)</p></li>
+                        </ul>
+
+                        <a href="#inicio" class="boton" onclick="mostrarRuta('simon-bolivar')">Ver Ruta</a>
                     </div>
                 </article>
             </div>
@@ -99,27 +136,35 @@
                 <p>¿Conoces algún sendero, parque o ruta verde que debería estar en nuestro mapa? Tu contribución ayuda a construir una comunidad más conectada y sostenible. Comparte información sobre rutas seguras y ecológicas para que más personas puedan disfrutarlas.</p>
             </div>
             
-            <form class="contribute-form">
+            <form class="contribute-form" id="contributeForm">
                 <!--Nombre-->
-                <label>Nombre</label>
-                <input type="text" placeholder="Tu nombre">
-
+                <label for="name">Nombre</label>
+                <input type="text" id="name" name="name" placeholder="Tu nombre" required>
+                <span class="error-message" id="nameError"></span>
+                
                 <!--Email-->
-                <label>Email</label>
-                <input type="email" placeholder="tucorreo@ejemplo.com">
-
-                <!--Dirección-->
-                <label>Direción de la ruta</label>
-                <textarea rows="4" placeholder="Dirección exacta de la Ruta..."></textarea>
-
-                <!--Dirección-->
-                <label>Detalles de la ruta</label>
-                <textarea rows="4" placeholder="Detalles de la Ruta..."></textarea>
-
-                <!--Boton-->
-                <button type="submit" class="boton">Enviar</button>
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="tucorreo@ejemplo.com" required>
+                <span class="error-message" id="emailError"></span>
+                
+                <!--Dirección de la ruta-->
+                <label for="address">Dirección de la ruta</label>
+                <textarea id="address" name="address" rows="4" placeholder="Dirección exacta de la Ruta..." required></textarea>
+                <span class="error-message" id="addressError"></span>
+                
+                <!--Detalles de la ruta-->
+                <label for="details">Detalles de la ruta</label>
+                <textarea id="details" name="details" rows="4" placeholder="Detalles de la Ruta..." required></textarea>
+                <span class="error-message" id="detailsError"></span>
+                
+                <!--Estado del formulario-->
+                <div class="form-status" id="formStatus"></div>
+                
+                <!--Botón-->
+                <button type="submit" class="boton" id="submitBtn">Enviar</button>
             </form>
         </section>
+
         
         <!--sección 6 | #nosotros-->
         <section class="info-section" id="nosotros">
@@ -136,25 +181,26 @@
             <article class="footer-brand">
                 <h3>GreenPaths</h3>
                 <ul class="social-icons">
-                    <li><a href="#"><img src="./img/icons8-facebook-nuevo-30.png" alt="facebook"></a></li>
-                    <li><a href="#"><img src="./img/icons8-linkedin-30.png" alt="linkedin"></a></li>
-                    <li><a href="#"><img src="./img/icons8-youtube-30.png" alt="youtube"></a></li>
-                    <li><a href="#"><img src="./img/icons8-instagram-30.png" alt="instagram"></a></li>
+                    <li><a href="#"><img src="./img/logo-facebook.png" alt="facebook"></a></li>
+                    <li><a href="#"><img src="./img/logo-linkedin.png" alt="linkedin"></a></li>
+                    <li><a href="#"><img src="./img/logo-youtube.png" alt="youtube"></a></li>
+                    <li><a href="#"><img src="./img/logo-instagram.png" alt="instagram"></a></li>
                 </ul>
             </article>
             <article class="footer-links">
                 <h3>Explora GreenPaths</h3>
                 <ul>
-                    <li><a href="#inicio">Inicio</a></li>
-                    <li><a href="#rutas">Rutas</a></li>
-                    <li><a href="#salud">Salud</a></li>
-                    <li><a href="#ambiente">Ambiente</a></li>
-                    <li><a href="#contribuye">Contribuye</a></li>
-                    <li><a href="#nosotros">Nosotros</a></li>
-                    <li><a href="./pages/mapa-greenpaths.html">Explorar Rutas</a></li>
+                    <li><a href="#inicio" data-scroll>Inicio</a></li>
+                    <li><a href="#rutas" data-scroll>Rutas</a></li>
+                    <li><a href="#salud" data-scroll>Salud</a></li>
+                    <li><a href="#ambiente" data-scroll>Ambiente</a></li>
+                    <li><a href="#contribuye" data-scroll>Contribuye</a></li>
+                    <li><a href="#nosotros" data-scroll>Nosotros</a></li>
                 </ul>
             </article>
         </div>
     </footer>
+
+    <script src="./js/main.js"></script>
 </body>
 </html>
